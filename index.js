@@ -18,6 +18,28 @@ app.use(express.static('public'));
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
+app.get('/api/whoami', (req, res) => {
+  // Get the client's IP address
+  const ipAddress = req.ip;
+
+  // Get the preferred language of the client
+  const language = req.headers['accept-language'] || 'unknown';
+
+  // Get the software information from the User-Agent header
+  const software = req.headers['user-agent'] || 'unknown';
+
+  // Create the response object
+  const response = {
+    ipaddress: ipAddress,
+    language: language.split(',')[0], // Get the primary language from the header
+    software: software
+  };
+
+  // Send the response
+  res.json(response);
+});
+
+
 
 // your first API endpoint...
 app.get('/api/hello', function (req, res) {
